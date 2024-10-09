@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  producer:
+    build:
+      context: .
+      target: producer
+    environment:
+      KAFKA_BROKERS: 192.168.8.71:9092,192.168.8.72:9092,192.168.8.73:9092
+      KAFKA_CLIENT_ID: myProducer
+      KAFKA_TOPIC: myTopic
+    networks:
+      - kafka-network
+
+  consumer:
+    build:
+      context: .
+      target: consumer
+    environment:
+      KAFKA_BROKERS: 192.168.8.71:9092,192.168.8.72:9092,192.168.8.73:9092
+      KAFKA_GROUP_ID: myGroup
+      KAFKA_TOPIC: myTopic
+    networks:
+      - kafka-network
+
+networks:
+  kafka-network:
+    driver: bridge
